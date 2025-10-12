@@ -120,9 +120,6 @@ if uploaded_file is not None:
         with c3:
             st.markdown(f"<div class='metric-card'><div class='metric-value'>{fraud_rate:.2f}%</div><div class='metric-label'>Fraud Rate</div></div>", unsafe_allow_html=True)
 
-        # --- Probability Distribution ---
-        st.subheader("🔎 Fraud Probability Distribution")
-        st.bar_chart(out_df['Fraud_Probability'].value_counts(bins=20).sort_index())
 
         # --- Risky Transactions ---
         risky = out_df[out_df['Prediction_Label'] == 'Fraud'].sort_values('Fraud_Probability', ascending=False)
