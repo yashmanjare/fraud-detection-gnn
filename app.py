@@ -122,12 +122,18 @@ if uploaded_file is not None:
 
 
         # --- Risky Transactions ---
-        risky = out_df[out_df['Prediction_Label'] == 'Fraud'].sort_values('Fraud_Probability', ascending=False)
-        st.subheader("🚨 Risky Transactions Detected")
-        if not risky.empty:
-            st.dataframe(risky.head(50))
-        else:
-            st.success("🎉 No risky transactions detected at this threshold.")
+            risky = out_df[out_df['Prediction_Label'] == 'Fraud'].sort_values('Fraud_Probability', ascending=False)
+            
+            # Drop model method column if it exists
+            if 'Model_Method' in risky.columns:
+                risky = risky.drop(columns=['Model_Method'])
+            
+            st.subheader("🚨 Risky Transactions Detected")
+            if not risky.empty:
+                st.dataframe(risky.head(50))
+            else:
+                st.success("🎉 No risky transactions detected at this threshold.")
+
 
         # --- Download Results ---
         csv = out_df.to_csv(index=False).encode("utf-8")
