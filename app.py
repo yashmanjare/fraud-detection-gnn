@@ -103,7 +103,7 @@ if uploaded_file is not None:
                 st.error(f"⚠️ Prediction failed: {e}")
                 st.stop()
 
-        st.success(f"✅ Detection completed using method: {meta.get('used_method', 'Unknown')}")
+        st.success("✅ Fraud detection completed successfully!")
 
         # --- Summary Metrics ---
         st.subheader("📈 Detection Summary")
