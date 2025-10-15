@@ -84,8 +84,8 @@ def predict_from_dataframe(df,
 
     Args:
         df (pd.DataFrame): Input transaction dataframe (columns should be numeric features used by model).
-        model_path (str or None): Path to .pth/.pt model file. If None or loading fails, an IsolationForest fallback is used.
-        use_gnn (bool): Whether to attempt GNN prediction. If False, directly uses IsolationForest.
+        model_path (str or None): Path to .pth/.pt model file. 
+        use_gnn (bool): Whether to attempt GNN prediction. 
         knn_k (int): number of neighbors for graph construction when using GNN.
         threshold (float 0..1): probability threshold to label as 'Fraud'.
         device (str): 'cpu' or 'cuda' (if available and model supports it).
