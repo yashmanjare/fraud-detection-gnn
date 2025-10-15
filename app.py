@@ -106,36 +106,34 @@ if uploaded_file is not None:
         st.success("✅ Fraud detection completed successfully!")
 
        # --- Summary Metrics ---
-st.subheader("📈 Detection Summary")
+        st.subheader("📈 Detection Summary")
 
-fraud_count = (out_df['Prediction_Label'] == 'Fraud').sum()
-total_count = len(out_df)
-fraud_rate = (fraud_count / total_count) * 100
+        fraud_count = (out_df['Prediction_Label'] == 'Fraud').sum()
+        total_count = len(out_df)
+        fraud_rate = (fraud_count / total_count) * 100
 
-c1, c2, c3 = st.columns(3)
-with c1:
-    st.markdown(f"<div class='metric-card'><div class='metric-value'>{total_count}</div><div class='metric-label'>Total Transactions</div></div>", unsafe_allow_html=True)
-with c2:
-    st.markdown(f"<div class='metric-card'><div class='metric-value'>{fraud_count}</div><div class='metric-label'>Fraudulent Transactions</div></div>", unsafe_allow_html=True)
-with c3:
-    st.markdown(f"<div class='metric-card'><div class='metric-value'>{fraud_rate:.2f}%</div><div class='metric-label'>Fraud Rate</div></div>", unsafe_allow_html=True)
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.markdown(f"<div class='metric-card'><div class='metric-value'>{total_count}</div><div class='metric-label'>Total Transactions</div></div>", unsafe_allow_html=True)
+        with c2:
+            st.markdown(f"<div class='metric-card'><div class='metric-value'>{fraud_count}</div><div class='metric-label'>Fraudulent Transactions</div></div>", unsafe_allow_html=True)
+        with c3:
+            st.markdown(f"<div class='metric-card'><div class='metric-value'>{fraud_rate:.2f}%</div><div class='metric-label'>Fraud Rate</div></div>", unsafe_allow_html=True)
 
-# ✅ move this part OUTSIDE of the with c3: block
-# --- Risky Transactions ---
-risky = out_df[out_df['Prediction_Label'] == 'Fraud'].sort_values('Fraud_Probability', ascending=False)
 
-# Drop unnecessary columns
-if 'Model_Method' in risky.columns:
-    risky = risky.drop(columns=['Model_Method'])
-if 'Class' in risky.columns:
-    risky = risky.drop(columns=['Class'])
-
-st.subheader("🚨 Risky Transactions Detected")
-if not risky.empty:
-    st.dataframe(risky.head(50), use_container_width=True)  # ✅ makes it full width
-else:
-    st.success("🎉 No risky transactions detected at this threshold.")
-
+        # --- Risky Transactions ---
+            risky = out_df[out_df['Prediction_Label'] == 'Fraud'].sort_values('Fraud_Probability', ascending=False)
+            
+            # Drop model method column if it exists
+            if 'Model_Method' in risky.columns:
+                risky = risky.drop(columns=['Model_Method'])
+                risky = risky.drop(columns=['Class'])
+            
+            st.subheader("🚨 Risky Transactions Detected")
+            if not risky.empty:
+                st.dataframe(risky.head(50),use_container_width=True)
+            else:
+                st.success("🎉 No risky transactions detected at this threshold.")
 
 
         # --- Download Results ---
