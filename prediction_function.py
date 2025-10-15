@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import NearestNeighbors
+from sklearn.ensemble import IsolationForest
 import torch.nn.functional as F
 
 # Optional import for torch_geometric — only required if GNN model is used.
@@ -83,8 +84,8 @@ def predict_from_dataframe(df,
 
     Args:
         df (pd.DataFrame): Input transaction dataframe (columns should be numeric features used by model).
-        model_path (str or None): Path to .pth/.pt model file. 
-        use_gnn (bool): Whether to attempt GNN prediction. 
+        model_path (str or None): Path to .pth/.pt model file. If None or loading fails, an IsolationForest fallback is used.
+        use_gnn (bool): Whether to attempt GNN prediction. If False, directly uses IsolationForest.
         knn_k (int): number of neighbors for graph construction when using GNN.
         threshold (float 0..1): probability threshold to label as 'Fraud'.
         device (str): 'cpu' or 'cuda' (if available and model supports it).
@@ -168,7 +169,9 @@ def predict_from_dataframe(df,
             print(f"[predict_from_dataframe] GNN inference failed: {e}")
             probs = None
 
+    # 4) If GNN wasn't usable, fallback to IsolationForest unsupervised anomaly scoring
     if probs is None:
+        # IsolationForest expects 2D numeric input; we already have X_scaled
         iso = IsolationForest(n_estimators=200, contamination='auto', random_state=42)
         iso.fit(X_scaled)
         # anomaly score: lower = more abnormal. `score_samples` gives higher = more normal.
