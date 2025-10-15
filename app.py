@@ -68,14 +68,14 @@ uploaded_file = st.file_uploader("📂 Upload Transaction CSV File", type=["csv"
 model_path = "gcn_correlation_smote_model.pth"
 
 # --- Sample CSV download ---
-sample_data = pd.DataFrame({
-    "amount": [120.0, 5600.0, 23.5, 400.0],
-    "time_seconds": [1000, 200000, 25000, 3600],
-    "feature_a": [0.1, -1.2, 0.3, 0.0],
-    "feature_b": [1, 0, 1, 1]
-})
-st.download_button("📄 Download Sample CSV", sample_data.to_csv(index=False).encode("utf-8"),
-                   "sample_transactions.csv", "text/csv")
+# sample_data = pd.DataFrame({
+#     "amount": [120.0, 5600.0, 23.5, 400.0],
+#     "time_seconds": [1000, 200000, 25000, 3600],
+#     "feature_a": [0.1, -1.2, 0.3, 0.0],
+#     "feature_b": [1, 0, 1, 1]
+# })
+# st.download_button("📄 Download Sample CSV", sample_data.to_csv(index=False).encode("utf-8"),
+#                    "sample_transactions.csv", "text/csv")
 
 # --- Process the Uploaded CSV ---
 if uploaded_file is not None:
