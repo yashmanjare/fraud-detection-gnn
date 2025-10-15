@@ -121,34 +121,18 @@ if uploaded_file is not None:
             st.markdown(f"<div class='metric-card'><div class='metric-value'>{fraud_rate:.2f}%</div><div class='metric-label'>Fraud Rate</div></div>", unsafe_allow_html=True)
 
 
-       # --- Risky Transactions ---
-risky = out_df[out_df['Prediction_Label'] == 'Fraud'].sort_values('Fraud_Probability', ascending=False)
-
-# Drop model method column if it exists
-if 'Model_Method' in risky.columns:
-    risky = risky.drop(columns=['Model_Method'])
-
-st.subheader("🚨 Risky Transactions Detected")
-
-# Add a little CSS to make the table neatly aligned and readable
-st.markdown("""
-    <style>
-    .stDataFrame {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-if not risky.empty:
-    st.dataframe(
-        risky.head(50),
-        use_container_width=True,  # ensures full-width alignment
-        height=500
-    )
-else:
-    st.success("🎉 No risky transactions detected at this threshold.")
-
+        # --- Risky Transactions ---
+            risky = out_df[out_df['Prediction_Label'] == 'Fraud'].sort_values('Fraud_Probability', ascending=False)
+            
+            # Drop model method column if it exists
+            if 'Model_Method' in risky.columns:
+                risky = risky.drop(columns=['Model_Method'])
+            
+            st.subheader("🚨 Risky Transactions Detected")
+            if not risky.empty:
+                st.dataframe(risky.head(50))
+            else:
+                st.success("🎉 No risky transactions detected at this threshold.")
 
 
         # --- Download Results ---
