@@ -131,7 +131,7 @@ if uploaded_file is not None:
             
             st.subheader("🚨 Risky Transactions Detected")
             if not risky.empty:
-                st.dataframe(risky.head(50))
+                st.dataframe(risky.head(50),use_container_width=True)
             else:
                 st.success("🎉 No risky transactions detected at this threshold.")
 
