@@ -127,6 +127,7 @@ if uploaded_file is not None:
             # Drop model method column if it exists
             if 'Model_Method' in risky.columns:
                 risky = risky.drop(columns=['Model_Method'])
+                risky = risky.drop(columns=['Class'])
             
             st.subheader("🚨 Risky Transactions Detected")
             if not risky.empty:
